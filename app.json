@@ -1,4 +1,7 @@
 {
   "name": "GymApp",
-  "displayName": "GymApp"
+  "displayName": "GymApp",
+  "android": {
+    "package": "com.anonymous.gymapp"
+  }
 }
