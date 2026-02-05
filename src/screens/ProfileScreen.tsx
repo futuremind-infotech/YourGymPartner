@@ -367,14 +367,15 @@ const styles = StyleSheet.create({
   achievementGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     gap: 12,
   },
 
   achievementCard: {
-    width: (width - 52) / 2,
+    width: '48.5%',
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
-    padding: 14,
+    padding: 20,
     alignItems: 'center',
     borderWidth: 0,
     shadowColor: '#000',
@@ -382,35 +383,39 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
+    minHeight: 160,
+    justifyContent: 'center',
   },
 
   achievementIcon: {
-    width: 52,
-    height: 52,
+    width: 56,
+    height: 56,
     borderRadius: 12,
     backgroundColor: '#FFE5F0',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
 
   achievementEmoji: {
-    fontSize: 26,
+    fontSize: 28,
   },
 
   achievementName: {
     color: '#1F2937',
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '800',
-    marginBottom: 4,
+    marginBottom: 6,
     textAlign: 'center',
+    lineHeight: 18,
   },
 
   achievementDesc: {
     color: '#6B7280',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '600',
     textAlign: 'center',
+    lineHeight: 15,
   },
 
   settingItem: {
