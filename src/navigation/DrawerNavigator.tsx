@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Text, Alert } from 'react-native';
+import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -13,9 +14,36 @@ import RewardsHistoryScreen from '../screens/RewardsHistoryScreen';
 
 const Drawer = createDrawerNavigator();
 
-export default function DrawerNavigator() {
+// custom drawer content component
+function CustomDrawerContent(props: any) {
+  const { navigation, state, descriptors, onLogout } = props;
+
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Logout"
+        icon={({ color, size }) => (
+          <Ionicons name="log-out" size={size} color={color} />
+        )}
+        onPress={() => {
+          navigation.closeDrawer();
+          onLogout && onLogout();
+        }}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
+type Props = {
+  onLogout?: () => void;
+};
+
+
+export default function DrawerNavigator({ onLogout }: Props) {
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} onLogout={onLogout} />}
       screenOptions={({ navigation }) => ({
         drawerPosition: 'right',
         headerTitle: 'OKFIT',

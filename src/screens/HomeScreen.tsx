@@ -8,7 +8,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 export default function HomeScreen() {
+  const { user } = useContext(AuthContext);
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -16,7 +21,7 @@ export default function HomeScreen() {
         {/* Greeting */}
         <View style={styles.greeting}>
           <Text style={styles.greetText}>Good morning</Text>
-          <Text style={styles.name}>Anamika</Text>
+          <Text style={styles.name}>{user?.name ?? 'Guest'}</Text>
         </View>
 
         {/* Membership Card */}
