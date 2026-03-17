@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,39 @@ import {
   Switch,
 } from 'react-native';
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// ⭐ Type for attendance (fixes TypeScript error)
+type Attendance = {
+  date: string;
+  minutes: number;
+};
+
 export default function AttendanceScreen() {
+
   const [showAverage, setShowAverage] = useState(false);
+
+  // ⭐ Attendance state
+  const [attendanceDays, setAttendanceDays] = useState<Attendance[]>([]);
+
+  // ⭐ Load attendance from storage
+  useEffect(() => {
+    loadAttendance();
+  }, []);
+
+  const loadAttendance = async () => {
+    const data = await AsyncStorage.getItem("attendance");
+
+    if (data) {
+      setAttendanceDays(JSON.parse(data));
+    }
+  };
+
+  // ⭐ Calculate total minutes
+  const totalMinutes = attendanceDays.reduce(
+    (sum, item) => sum + item.minutes,
+    0
+  );
 
   const chartData = [
     { day: 'Sun', value: 5 },
@@ -75,11 +106,21 @@ export default function AttendanceScreen() {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Total time spent on fitness</Text>
 
-        <Text style={styles.bigBlue}>1217 <Text style={styles.unit}>minutes</Text></Text>
+        <Text style={styles.bigBlue}>
+          {totalMinutes} <Text style={styles.unit}>minutes</Text>
+        </Text>
+
         <Text style={styles.or}>or</Text>
-        <Text style={styles.bigBlue}>20 <Text style={styles.unit}>hours</Text></Text>
+
+        <Text style={styles.bigBlue}>
+          {Math.floor(totalMinutes / 60)} <Text style={styles.unit}>hours</Text>
+        </Text>
+
         <Text style={styles.or}>or</Text>
-        <Text style={styles.bigBlue}>0 <Text style={styles.unit}>days</Text></Text>
+
+        <Text style={styles.bigBlue}>
+          {Math.floor(totalMinutes / 1440)} <Text style={styles.unit}>days</Text>
+        </Text>
       </View>
 
       {/* EXTRA SECTION – Workout Summary */}
@@ -88,7 +129,7 @@ export default function AttendanceScreen() {
 
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Workout days</Text>
-          <Text style={styles.summaryValue}>18</Text>
+          <Text style={styles.summaryValue}>{attendanceDays.length}</Text>
         </View>
 
         <View style={styles.summaryRow}>

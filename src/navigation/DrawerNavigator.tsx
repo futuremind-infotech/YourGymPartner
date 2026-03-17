@@ -11,6 +11,7 @@ import BodyMetricsScreen from '../screens/BodyMetricsScreen';
 import ChallengesScreen from '../screens/ChallengesScreen';
 import FeedbackScreen from '../screens/FeedbackScreen';
 import RewardsHistoryScreen from '../screens/RewardsHistoryScreen';
+import ScanQR from '../screens/ScanQR'; // ⭐ ADDED
 
 const Drawer = createDrawerNavigator();
 
@@ -39,7 +40,6 @@ type Props = {
   onLogout?: () => void;
 };
 
-
 export default function DrawerNavigator({ onLogout }: Props) {
   return (
     <Drawer.Navigator
@@ -52,7 +52,7 @@ export default function DrawerNavigator({ onLogout }: Props) {
         headerRight: () => (
           <TouchableOpacity
             style={styles.menuBtn}
-            onPress={() => navigation.openDrawer()} // mobile-safe
+            onPress={() => navigation.openDrawer()}
           >
             <Ionicons name="menu" size={26} color="#000" />
           </TouchableOpacity>
@@ -62,6 +62,10 @@ export default function DrawerNavigator({ onLogout }: Props) {
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Stats" component={StatsScreen} />
       <Drawer.Screen name="Attendance" component={AttendanceScreen} />
+
+      {/* ⭐ QR SCANNER SCREEN */}
+      <Drawer.Screen name="Scan QR" component={ScanQR} />
+
       <Drawer.Screen name="Body Metrics" component={BodyMetricsScreen} />
       <Drawer.Screen name="Challenges" component={ChallengesScreen} />
       <Drawer.Screen name="Feedback" component={FeedbackScreen} />

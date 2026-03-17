@@ -83,12 +83,6 @@ export default function LoginScreen({ navigation, onAuthSuccess }: Props) {
         {errorMessage ? (
           <Text style={styles.errorText}>{errorMessage}</Text>
         ) : null}
-
-        <View style={styles.demoBox}>
-          <Text style={styles.demoTitle}>Demo Account:</Text>
-          <Text style={styles.demoText}>Email: john@example.com</Text>
-          <Text style={styles.demoText}>Password: password123</Text>
-        </View>
       </View>
     </SafeAreaView>
   );

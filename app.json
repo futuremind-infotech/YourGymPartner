@@ -3,5 +3,8 @@
   "displayName": "GymApp",
   "android": {
     "package": "com.anonymous.gymapp"
-  }
+  },
+  "plugins": [
+    "expo-barcode-scanner"
+  ]
 }

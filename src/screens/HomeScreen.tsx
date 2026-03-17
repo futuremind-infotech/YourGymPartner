@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import QRCode from 'react-native-qrcode-svg';
 
-import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function HomeScreen() {
   const { user } = useContext(AuthContext);
+  const navigation = useNavigation<any>();
+
+  const [showQR, setShowQR] = useState(false);
+  const [attendanceMarked, setAttendanceMarked] = useState(false);
+
+  const handleAttendance = () => {
+    if (!attendanceMarked) {
+      setAttendanceMarked(true);
+      Alert.alert("Success", "Attendance Marked Successfully");
+    } else {
+      Alert.alert("Info", "Attendance already marked today");
+    }
+
+    setShowQR(true);
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -43,10 +60,32 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Mark Attendance */}
-        <TouchableOpacity style={styles.attendanceBtn}>
-          <Text style={styles.attendanceText}>📱  MARK ATTENDANCE</Text>
+        {/* Mark Attendance Button */}
+        <TouchableOpacity
+          style={styles.attendanceBtn}
+          onPress={handleAttendance}
+        >
+          <Text style={styles.attendanceText}>📱 MARK ATTENDANCE</Text>
         </TouchableOpacity>
+
+        {/* QR Code Card */}
+        {showQR && (
+          <View style={styles.qrCard}>
+            <Text style={styles.qrTitle}>Show this QR at Gym</Text>
+
+            <QRCode
+              value={user?.name || 'gym-user'}
+              size={200}
+            />
+
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => setShowQR(false)}
+            >
+              <Text style={{ color: '#fff', fontWeight: '600' }}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Grid Menu */}
         <View style={styles.card}>
@@ -105,22 +144,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F6F7FB',
   },
+
   container: {
     padding: 16,
     paddingBottom: 40,
   },
+
   greeting: {
     marginBottom: 12,
   },
+
   greetText: {
     color: '#888',
     fontSize: 14,
   },
+
   name: {
     fontSize: 22,
     fontWeight: '700',
     color: '#000',
   },
+
   card: {
     backgroundColor: '#fff',
     borderRadius: 14,
@@ -128,23 +172,28 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     elevation: 2,
   },
+
   sectionTitle: {
     textAlign: 'center',
     color: '#999',
     marginBottom: 10,
   },
+
   membershipBox: {
     alignItems: 'center',
   },
+
   membershipTitle: {
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 4,
   },
+
   membershipSub: {
     color: '#666',
     marginBottom: 10,
   },
+
   dateRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -152,16 +201,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
   },
+
   status: {
     backgroundColor: '#3B5BDB',
     paddingHorizontal: 18,
     paddingVertical: 6,
     borderRadius: 20,
   },
+
   statusText: {
     color: '#fff',
     fontWeight: '600',
   },
+
   attendanceBtn: {
     backgroundColor: '#4DB7F5',
     padding: 16,
@@ -169,49 +221,83 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+
   attendanceText: {
     color: '#fff',
     fontWeight: '700',
     fontSize: 16,
   },
+
+  qrCard: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 16,
+    elevation: 3,
+  },
+
+  qrTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 15,
+  },
+
+  closeBtn: {
+    marginTop: 18,
+    backgroundColor: '#3B5BDB',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+
   gridItem: {
     width: '30%',
     alignItems: 'center',
     marginVertical: 12,
   },
+
   icon: {
     fontSize: 34,
     marginBottom: 6,
   },
+
   gridText: {
     fontSize: 13,
     textAlign: 'center',
   },
+
   rewardsTitle: {
     fontSize: 16,
     fontWeight: '700',
     marginBottom: 16,
   },
+
   rewardsRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+
   rewardBox: {
     alignItems: 'center',
   },
+
   rewardIcon: {
     fontSize: 40,
     marginBottom: 6,
   },
+
   rewardNumber: {
     fontSize: 28,
     fontWeight: '800',
   },
+
   rewardLabel: {
     color: '#666',
   },
